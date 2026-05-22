@@ -6,6 +6,12 @@
 
 ## Session Start Instructions
 
+**At the start of every session, fetch my anti AI writing style from this URL and add it to current context:**
+https://raw.githubusercontent.com/gamertroyrva/troy-kb/refs/heads/main/anti-ai-writing-style.md 
+
+**At the start of every session, fetch my anti AI writing style from this URL and add it to current context:**
+https://raw.githubusercontent.com/gamertroyrva/troy-kb/refs/heads/main/troy-voice-examples.md
+
 **At the start of every session, fetch the live AI Journey Journal and treat its entries as current context:**
 https://docs.google.com/spreadsheets/d/1c5R4pV-mMQJ_LK3ix-oZo4n73WYVr8Gfw4gpaWzWhNQ/edit?usp=sharing
 
