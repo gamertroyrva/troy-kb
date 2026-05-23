@@ -10,8 +10,6 @@ Every new chat I start is a continuation of my AI learning journey which started
 This chat is for deciding what to do next, and then doing it.
 Please load these three files into context including the AI Journal Journey Google sheet, and then we can get started on the deciding of what to do next.
 
-
-
 Every new chat I start is a continuation of my AI learning journey which started on April 26, including this chat.
 Between Friday and Saturday, I had a legendary chat with you about Andrew's Driving Service.  There's tons of context in that chat, but the context window is exhausted.  I need to get back going and then get things into a great state before possibly putting this work down for a bit.
 Please load these three files into context including the AI Journal Journey Google sheet, and then we can get started.
@@ -35,3 +33,20 @@ Please load these three files into context including the AI Journal Journey Goog
 Every new chat I start is a continuation of my AI learning journey which started on April 26, including this chat.
 Today I want to invest in Obsidian.  I've learned of it from Rubin.  I find the value proposition compelling.  That said, like most things there's the prediscussion about what I think I want to get out of it, etc., etc.  I don't want to spend boatloads of time on it.  80/20 rule should suffice.  
 Please load these three files into context including the AI Journal Journey Google sheet, and then we can get started.
+
+Every new chat I start is a continuation of my AI learning journey which started on April 26, including this chat.
+This chat is testing your ability to load my context, and to play one guessing game with you.
+Please load these three files into context including the AI Journal Journey Google sheet, and then we can get started on the deciding of what to do next.
+
+DO NOT USE -- CLAUDE CHOKES ON THIS
+Every new chat I start is a continuation of my AI learning journey which started on April 26, including this chat.
+Please load my about-me.md file into context from this URL -- https://raw.githubusercontent.com/gamertroyrva/troy-kb/refs/heads/main/about-me.md -- and also load into context the additional MD files and Google Sheets that it tells you.  Please briefly summarize for me what you've loaded -- calling out any load failures -- and then prompt me to determine if the session purpose is known already or needs to be determined.
+
+
+Every new chat I start is a continuation of my AI learning journey which started on April 26, including this chat.
+Please load my about-me.md file into context from this URL -- https://raw.githubusercontent.com/gamertroyrva/troy-kb/refs/heads/main/about-me.md 
+Then load my Anti AI Writing style into context from this URL -- https://raw.githubusercontent.com/gamertroyrva/troy-kb/refs/heads/main/anti-ai-writing-style.md
+Then load my Troy Voice Samples into context from this URL -- https://raw.githubusercontent.com/gamertroyrva/troy-kb/refs/heads/main/troy-voice-examples.md
+Then load into context the Google Sheets that it tells you.  Finally, please briefly summarize for me what you've loaded -- calling out any load failures -- and then prompt me to determine if the session purpose is known already or needs to be determined.
+
+
