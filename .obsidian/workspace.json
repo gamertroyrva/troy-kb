@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "about-me.md",
+                "file": "projects/math-trade-genie.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "about-me"
+              "title": "math-trade-genie"
             }
           }
         ]
@@ -182,8 +182,8 @@
   },
   "active": "c7e6466acd487abe",
   "lastOpenFiles": [
-    "anti-ai-writing-style.md",
     "about-me.md",
+    "anti-ai-writing-style.md",
     "0_chat_starter_prompt.md",
     "troy-voice-examples.md"
   ]
