@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "math-trade-magic.md",
+                "file": "about-me.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "math-trade-magic"
+              "title": "about-me"
             }
           }
         ]
@@ -182,6 +182,7 @@
   },
   "active": "7c299e627ef98ece",
   "lastOpenFiles": [
+    "math-trade-magic.md",
     "non-project-restarts/math-trade-magic-restart.md",
     "projects/MisoCon26-Attendee-Tracker-Project2.md",
     "projects/MisoCon26-Attendee-Tracker-Project.md",
