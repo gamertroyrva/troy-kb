@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "about-me.md",
+                "file": "projects/andrews-driving-service-RESTART.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "about-me"
+              "title": "andrews-driving-service-RESTART"
             }
           }
         ]
@@ -182,12 +182,13 @@
   },
   "active": "7c299e627ef98ece",
   "lastOpenFiles": [
+    "about-me.md",
+    "projects/andrews-driving-service-RESTART.md",
     "math-trade-magic.md",
     "non-project-restarts/math-trade-magic-restart.md",
     "projects/MisoCon26-Attendee-Tracker-Project2.md",
     "projects/MisoCon26-Attendee-Tracker-Project.md",
     "projects/math-trade-genie.md",
-    "about-me.md",
     "anti-ai-writing-style.md",
     "0_chat_starter_prompt.md",
     "troy-voice-examples.md"
