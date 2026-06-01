@@ -134,7 +134,7 @@ These hobbies are not separate from my AI work — they are the laboratory for i
 ## Troy's Philosophy & Principles
 
 - **One block at a time** — the discipline that keeps the backlog from overwhelming
-- **Learning thread in Chat, building thread in Cowork** — separation is intentional and healthy
+- **Learning thread in Chat, building thread in Claude Code** — Claude Code is the primary environment for building. Cowork remains available but Code is the strong preference.
 - **New task for new scope** — every discrete piece of work gets a fresh Cowork task, same project
 - **Don't knock it till you try it** — try the cheap easy path first, measure it, swap later if needed
 - **Real agents act autonomously** — a Copilot wrapper with guardrails is not an agent; n8n workflows firing on their own are agents. Troy knows the difference.
