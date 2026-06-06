@@ -11,7 +11,7 @@ This is not a spreadsheet cleanup project. This is the construction of critical 
 - Structured update sessions — adding venues, refreshing data, marking closures
 - A customer-facing itinerary/destination tool on the website (future state — Item 14 in Troy's backlog)
 
-Andrew's existing spreadsheet (CEN_VA_MASTER_CURRENT_1_.xlsx, 280 rows, 97 columns) is not the thing being fixed. It is input data — the raw material to be mined for venue records — and a proof-of-concept vehicle for the row building process.
+Andrew's existing spreadsheet (CEN_VA_MASTER_CURRENT_1_.xlsx, 280 rows, 93 columns) is not the thing being fixed. It is input data — the raw material to be mined for venue records — and a proof-of-concept vehicle for the row building process.
 
 ---
 
