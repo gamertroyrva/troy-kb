@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "f0c042995ff75f9a",
+        "id": "0c173d47159cb1b4",
         "type": "tabs",
         "children": [
           {
-            "id": "6be1e7ba2ddec316",
+            "id": "5740e32773900a0e",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "troy-voice-examples.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "troy-voice-examples"
+              "title": "New tab"
             }
           }
         ]
@@ -180,13 +176,15 @@
       "bases:Create new base": false
     }
   },
-  "active": "6be1e7ba2ddec316",
+  "active": "5740e32773900a0e",
   "lastOpenFiles": [
+    "projects/math-trade-execution-plan-handoff.md",
+    "projects/ADS_RowBuilder_Operating_Guide_v1.0.md",
+    "troy-voice-examples.md",
     "projects/ads_rowbuilder_handoff_jun6_2.md",
     "projects/andrews-driving-service-handoff-jun6.md",
     "projects/andrews-driving-service-ROW-BUILDER.md",
     "projects/andrews-driving-service-RESTART.md",
-    "troy-voice-examples.md",
     "about-me.md",
     "about-me.md.tmp.29400.0719deb6495a",
     "about-me.md.tmp.24388.7db1a0bcc104",
