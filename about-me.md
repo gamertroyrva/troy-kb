@@ -6,14 +6,7 @@
 
 ## Session Start Instructions
 
-**At the start of every session, fetch my anti AI writing style from this URL and add it to current context:**
-https://raw.githubusercontent.com/gamertroyrva/troy-kb/refs/heads/main/anti-ai-writing-style.md 
-
-**At the start of every session, fetch my Troy voice examples from this URL and add it to current context:**
-https://raw.githubusercontent.com/gamertroyrva/troy-kb/refs/heads/main/troy-voice-examples.md
-
-**Load this file alongside about-me.md at the start of any session involving math trades, Math Trade Genie, OLWLG, or board game community work:**
-https://raw.githubusercontent.com/gamertroyrva/troy-kb/refs/heads/main/math-trade-magic.md
+**At the start of every session, load any additional markdown files provided to you alongside this one and add them to current context:**
 
 **At the start of every session, fetch the live AI Journey Journal and treat its entries as current context:**
 https://docs.google.com/spreadsheets/d/1c5R4pV-mMQJ_LK3ix-oZo4n73WYVr8Gfw4gpaWzWhNQ/edit?usp=sharing
