@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "temp/automation-opportunity-matrix-phase1.md",
+                "file": "projects/math-trade-execution-plan-buildout_real-deal.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "automation-opportunity-matrix-phase1"
+              "title": "math-trade-execution-plan-buildout_real-deal"
             }
           }
         ]
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 324.5
+    "width": 468.5
   },
   "right": {
     "id": "539ed649042fa4f1",
@@ -182,6 +182,8 @@
   },
   "active": "5740e32773900a0e",
   "lastOpenFiles": [
+    "projects/automation-opportunity-matrix-buildout-resumption.md",
+    "temp/automation-opportunity-matrix-phase1.md",
     "projects/math-trade-execution-plan-buildout_real-deal.md",
     "projects/math-trade-execution-plan-handoff.md",
     "projects/mto-playbook-offer-up-games-draft0.md",
