@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "0c173d47159cb1b4",
+        "id": "c09ff04f680622e3",
         "type": "tabs",
         "children": [
           {
-            "id": "5740e32773900a0e",
+            "id": "c33d7e57e6e8ed92",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "projects/ADS_RowBuilder_Operating_Guide_v2_0.md",
+                "file": "projects/handoff-to-claude-code-rap-sheet-builder.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "ADS_RowBuilder_Operating_Guide_v2_0"
+              "title": "handoff-to-claude-code-rap-sheet-builder"
             }
           }
         ]
@@ -78,7 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 468.5
+    "width": 388.5
   },
   "right": {
     "id": "539ed649042fa4f1",
@@ -180,16 +180,25 @@
       "bases:Create new base": false
     }
   },
-  "active": "5740e32773900a0e",
+  "active": "c33d7e57e6e8ed92",
   "lastOpenFiles": [
-    "projects/ADS_RowBuilder_Operating_Guide_v1.0.md",
-    "projects/ADS_RowBuilder_Operating_Guide_v2_0.md",
-    "projects/math-trade-execution-plan-buildout_real-deal.md",
+    "projects/richmonds-most-unwanted-rules-v1.md",
     "projects/automation-opportunity-matrix-buildout-resumption.md",
+    "temp/blake-morris-restart.md",
+    "temp/loop-engineering.md",
+    "projects/ADS_RowBuilder_Operating_Guide_v2_0.md",
+    "temp/README.md",
+    "projects/restart-tracking-participation-agent.md",
+    "temp/experiment.md",
+    "projects/Untitled.md",
+    "projects/ADS_ListMaker_Rules_v2.md",
+    "projects/ADS_ListMaker_Rules.md",
+    "troy-voice-examples.md",
+    "projects/ADS_RowBuilder_Operating_Guide_v1.0.md",
+    "projects/math-trade-execution-plan-buildout_real-deal.md",
     "temp/automation-opportunity-matrix-phase1.md",
     "projects/math-trade-execution-plan-handoff.md",
     "projects/mto-playbook-offer-up-games-draft0.md",
-    "troy-voice-examples.md",
     "projects/ads_rowbuilder_handoff_jun6_2.md",
     "projects/andrews-driving-service-handoff-jun6.md",
     "projects/andrews-driving-service-ROW-BUILDER.md",
@@ -200,9 +209,6 @@
     "math-trade-magic.md",
     "non-project-restarts/math-trade-magic-restart.md",
     "projects/MisoCon26-Attendee-Tracker-Project2.md",
-    "projects/MisoCon26-Attendee-Tracker-Project.md",
-    "projects/math-trade-genie.md",
-    "anti-ai-writing-style.md",
-    "0_chat_starter_prompt.md"
+    "projects/MisoCon26-Attendee-Tracker-Project.md"
   ]
 }
