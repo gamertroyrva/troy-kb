@@ -13,12 +13,40 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "projects/handoff-to-claude-code-rap-sheet-builder.md",
+                "file": "projects/mt/swap-day/trade-stats-rules-spec.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "handoff-to-claude-code-rap-sheet-builder"
+              "title": "trade-stats-rules-spec"
+            }
+          },
+          {
+            "id": "c7d382cc381ac8e2",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "projects/mt/swap-day/cash-consolidation-rules-spec.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "cash-consolidation-rules-spec"
+            }
+          },
+          {
+            "id": "71f85760ab827288",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "projects/mt/swap-day/drop-zone-lists-rules-spec.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "drop-zone-lists-rules-spec"
             }
           }
         ]
@@ -182,6 +210,10 @@
   },
   "active": "c33d7e57e6e8ed92",
   "lastOpenFiles": [
+    "projects/mt/swap-day/drop-zone-lists-rules-spec.md",
+    "projects/mt/swap-day/cash-consolidation-rules-spec.md",
+    "projects/mt/swap-day/cash-consolidation-rules-spec_0724.md",
+    "projects/mt/swap-day/trade-stats-rules-spec.md",
     "projects/richmonds-most-unwanted-rules-v1.md",
     "projects/automation-opportunity-matrix-buildout-resumption.md",
     "temp/blake-morris-restart.md",
@@ -205,10 +237,6 @@
     "projects/andrews-driving-service-RESTART.md",
     "about-me.md",
     "about-me.md.tmp.29400.0719deb6495a",
-    "about-me.md.tmp.24388.7db1a0bcc104",
-    "math-trade-magic.md",
-    "non-project-restarts/math-trade-magic-restart.md",
-    "projects/MisoCon26-Attendee-Tracker-Project2.md",
-    "projects/MisoCon26-Attendee-Tracker-Project.md"
+    "about-me.md.tmp.24388.7db1a0bcc104"
   ]
 }
