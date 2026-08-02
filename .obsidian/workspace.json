@@ -4,49 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "c09ff04f680622e3",
+        "id": "a163b0d8b4a24e0e",
         "type": "tabs",
         "children": [
           {
-            "id": "c33d7e57e6e8ed92",
+            "id": "e7d12de8dc82b1f5",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "projects/mt/swap-day/trade-stats-rules-spec.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "trade-stats-rules-spec"
-            }
-          },
-          {
-            "id": "c7d382cc381ac8e2",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "projects/mt/swap-day/cash-consolidation-rules-spec.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "cash-consolidation-rules-spec"
-            }
-          },
-          {
-            "id": "71f85760ab827288",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "projects/mt/swap-day/drop-zone-lists-rules-spec.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "drop-zone-lists-rules-spec"
+              "title": "New tab"
             }
           }
         ]
@@ -68,8 +36,10 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "alphabetical",
-                "autoReveal": false
+                "sortOrder": "byModifiedTimeReverse",
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -208,16 +178,20 @@
       "bases:Create new base": false
     }
   },
-  "active": "c33d7e57e6e8ed92",
+  "active": "e7d12de8dc82b1f5",
   "lastOpenFiles": [
+    "projects/ads/agentic-loop-goal-designer-prompt_v2.md",
+    "projects/ads/agentic-loop-goal-designer-prompt_v1.md",
+    "temp/how-to-build-a-swarm-of-ai-agents.md",
+    "temp/loop-engineering.md",
+    "projects/mt/swap-day/trade-stats-rules-spec.md",
     "projects/mt/swap-day/drop-zone-lists-rules-spec.md",
     "projects/mt/swap-day/cash-consolidation-rules-spec.md",
+    "projects/mt/swap-day/gives_receives_trade_log_2026_summer.txt",
     "projects/mt/swap-day/cash-consolidation-rules-spec_0724.md",
-    "projects/mt/swap-day/trade-stats-rules-spec.md",
     "projects/richmonds-most-unwanted-rules-v1.md",
     "projects/automation-opportunity-matrix-buildout-resumption.md",
     "temp/blake-morris-restart.md",
-    "temp/loop-engineering.md",
     "projects/ADS_RowBuilder_Operating_Guide_v2_0.md",
     "temp/README.md",
     "projects/restart-tracking-participation-agent.md",
@@ -233,9 +207,6 @@
     "projects/mto-playbook-offer-up-games-draft0.md",
     "projects/ads_rowbuilder_handoff_jun6_2.md",
     "projects/andrews-driving-service-handoff-jun6.md",
-    "projects/andrews-driving-service-ROW-BUILDER.md",
-    "projects/andrews-driving-service-RESTART.md",
-    "about-me.md",
     "about-me.md.tmp.29400.0719deb6495a",
     "about-me.md.tmp.24388.7db1a0bcc104"
   ]

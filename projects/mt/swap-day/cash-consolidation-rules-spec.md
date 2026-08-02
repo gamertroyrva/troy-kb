@@ -1,16 +1,16 @@
-# Cash Consolidation — Rules Spec (Block 08) (The Recipe / Working Copy)
+# Cash Consolidation — Rules Spec (Block 08)
 
-*This document contains only the business rules for the Cash Consolidation chore. No example data, no prior answers, no math-trade-specific numbers. Intended for use in an isolated session to test whether the rules alone are sufficient to reproduce a correct result. Companion to `trade-stats-rules-spec.md` (Block 07) and `drop-zone-lists-rules-spec.md` (Block 09). Block numbers 07–09 intentionally leave room for other blocks in between.*
+*This document contains the complete business rules for the Cash Consolidation chore, standing on its own. Companion to `trade-stats-rules-spec.md` (Block 07) and `drop-zone-lists-rules-spec.md` (Block 09). Block numbers 07–09 intentionally leave room for other blocks in between.*
 
 ---
 
 ## Input
 
-**The Gives Receives Trade Log** — the per-participant gives/receives portion extracted from the OLWLG final results webpage for a given math trade. Each participant has a header line, a set of `-- N. gives "Item" to Handle` lines, and a set of `++ N. receives "Item" from Handle` lines. Full definition of how this document comes into existence lives in `trade-stats-rules-spec.md` (Block 07).
+**The Gives/Receives Trade Log** — the per-participant gives/receives portion extracted from the OLWLG final results webpage for a given math trade. Each participant has a header line, a set of `-- N. gives "Item" to Handle` lines, and a set of `++ N. receives "Item" from Handle` lines. Full definition of how this document comes into existence lives in `trade-stats-rules-spec.md` (Block 07).
 
 ---
 
-## Rule 1 — Cash Trade Identification (v2)
+## Rule 1 — Cash Trade Identification
 
 An item is a **cash trade** if and only if:
 
@@ -25,85 +25,92 @@ An item is a **cash trade** if and only if:
 - A **store-branded gift card** (e.g., "$25 Target gift card," "Amazon gift card") is NOT a cash trade. Treat it as a physical item that must be hand-delivered at swap, like a board game.
 - A real catalogued game with a `$` in its title (not prefixed "Alt Name:") is NOT a cash trade.
 
-**Reconciliation check:** Total cash gives across all participants must equal total cash receives. If they don't match, stop and investigate before proceeding — do not build the Working Copy on an unreconciled base.
+**Reconciliation check:** Total cash gives across all participants must equal total cash receives. If they don't match, stop and investigate before proceeding — do not build the NET Table or Working Copy on an unreconciled base.
 
 ---
 
-## Rule 2 — Build the NET Table
+## Rule 2 — The NET Table
 
 For each participant with any cash activity:
 - **GIVES** = sum of all cash items they give away
 - **RECEIVES** = sum of all cash items they receive
 - **NET** = RECEIVES − GIVES
 
-Discard participants with zero cash activity from further steps (they have nothing to settle).
+Discard participants with zero cash activity (they have nothing to settle).
 
-Split the resulting list into:
-- **Givers** — NET is negative (they owe money)
-- **Receivers** — NET is positive (they're owed money)
+Split the resulting list into two independent columns:
+- **GIVERS** — NET is negative (they owe money), shown as a negative number, sorted largest debt to smallest.
+- **RECEIVERS** — NET is positive (they're owed money), sorted largest credit to smallest.
 
-The absolute value of the Givers' total must equal the Receivers' total. This is a second reconciliation checkpoint.
+The absolute value of the Givers' total must equal the Receivers' total — a second reconciliation checkpoint.
+
+**The NET Table is a required deliverable in its own right, not a disposable intermediate.** It is a human audit checkpoint that must be produced and reviewable on its own, even though its output feeds directly into Rule 3.
 
 ---
 
 ## Rule 3 — Matching Algorithm (produces the Working Copy)
 
-Matching happens in passes. Apply them in order, but be willing to move between Pass 2 and Pass 3 as needed — they're complementary tactics for the same remaining pool, not a strict one-way pipeline.
+Matching happens in passes, applied in order.
 
-### Pass 1 — Low-Hanging Fruit
+### Pass 1 — Exact 1:1
 Scan for any giver whose debt amount exactly equals some receiver's credit amount (a clean 1:1 match). Pull every such pair out immediately and remove both parties from the pool.
 
 *Rationale: these are unambiguous, zero-cost resolutions. Solving them first shrinks the remaining problem and avoids painting yourself into a corner later.*
 
-### Pass 2 — Smallest-Remaining-Giver-First
-With the low-hanging fruit removed, take whatever givers and receivers are left. Process givers **smallest debt first**:
+### Pass 2 — Largest-Remaining-First, Either Side
+With the low-hanging fruit removed, take whichever remaining party — giver or receiver — currently holds the single largest magnitude in the pool. The side isn't fixed in advance; work from whichever side the biggest number happens to be on.
 
-- For the smallest remaining giver, find a combination of remaining receivers whose credits sum exactly to that giver's debt.
-- Remove the matched receivers from the pool once used.
-- Move to the next-smallest remaining giver and repeat.
+- Find the exact-sum combination on the *other* side that closes it out.
+- If no single counterpart matches, look for a subset of the other side that sums exactly to it.
+- If no subset works either, pull in the next-largest remaining party on *this* side (combining debts or credits together) and re-search with the combined total. Repeat, pulling in additional parties one at a time, until a combined total matches some subset on the other side.
+- Once a match is found, remove all matched parties from the pool and move to the next-largest remaining party (again, either side).
 
-*Rationale: starting with the smallest giver first (rather than the largest) avoids leaving small, hard-to-match receiver amounts stranded against a large remaining giver at the end.*
+*Rationale: working from the biggest number in the remaining pool, whichever side it lives on, tends to produce the most natural groupings and avoids leaving small amounts stranded against an unresolvable large remainder later.*
 
-**If the smallest remaining giver has no exact-sum receiver subset available:** don't stall. Combine that giver with the next-smallest remaining giver (summing their debts together) and search again. Repeat — pulling in additional small givers one at a time — until a combined debt total matches some subset of remaining receivers. Once found, split the resulting payment back across the individual givers involved (see Pass 4).
+### Pass 3 — Forced Splitting
+When the remaining pool cannot be divided into clean, non-overlapping subset-sum clusters — no combination on either side closes the gap exactly — split one or more amounts into sub-pieces so that every dollar still lands on a valid pairing.
 
-### Pass 3 — Largest-Remaining-Receiver-First, Gap-Filled
-This is the mirror image of Pass 2, and often the more natural move for the *biggest* numbers in the pool:
+- Splits can occur on either side: a giver's debt can be divided across multiple receivers, and a receiver's credit can be fed by multiple givers.
+- A single party's amount can even need to be split into pieces destined for different counterparts *because those counterparts each need a specific fragment of it* — not because the party's own total was too large to match anyone whole.
+- There is no requirement that each giver's matched receivers form a sealed, exclusive group, or vice versa. Cash is fungible; a receiver getting their total from two unrelated givers is just as valid as getting it from one.
 
-- Take the largest remaining receiver's credit amount.
-- Take the largest remaining giver's debt amount.
-- If the giver's debt is smaller than the receiver's credit, find the exact giver (or combination of givers) whose debt closes that specific gap — not just any leftover amount, the precise shortfall.
-- Once the combined giver debts exactly equal the receiver's credit, that group is settled and removed from the pool.
-
-*Rationale: for large givers and large receivers, hunting for a receiver-side subset (Pass 2's approach) is often harder than simply asking "what closes this specific gap?" Working top-down from the biggest numbers first tends to produce tighter, more natural-feeling groupings for the largest amounts in the trade.*
-
-### Pass 4 — Splitting a Shared Receiver or Giver Across a Cluster
-When a cluster resolves with more than one giver and/or more than one receiver (from Pass 2's combined-giver fallback or Pass 3's gap-fill), the individual payment lines within that cluster don't have to preserve strict "this giver only pays receivers in its own private group" boundaries. A single receiver's total credit **can** be fed by two or more unrelated givers, and a single giver's total debt **can** be split across two or more unrelated receivers, whenever doing so produces a cleaner or more natural-looking result than forcing rigid, mutually exclusive giver-to-receiver groupings.
-
-*Rationale: earlier versions of this rule treated each giver's matched receivers as a sealed, exclusive group. That's unnecessarily restrictive — cash is fungible, and a receiver getting their $45 from two different people is just as valid a real-world payment as getting it from one. Allowing splits across the cluster boundary produces rounder, more efficient groupings.*
-
-**Note on optimality:** this is a "mostly efficient," not a globally-optimal, matching process. If a different valid grouping exists that also nets to zero correctly, that is an acceptable outcome — exact amounts matching correctly matters far more than achieving the theoretical minimum number of transactions.
+**Note on optimality:** this is a "mostly efficient," not a globally-optimal, matching process. If a different valid grouping exists that also nets to zero correctly, that is an acceptable outcome — exact amounts matching correctly matters far more than achieving the theoretical minimum number of transactions or the single "best" partition. Two different valid partitions of the same pool can both be correct.
 
 ---
 
-## Rule 4 — Final Display Order
+## Rule 4 — Output Format: The Working Copy
 
-Once all matches are made (regardless of which pass produced them), the finished Working Copy should be sorted as a single list:
-
-- **By giver, largest total debt to smallest total debt.**
-- Each giver's own matched receiver lines stay grouped together beneath their name, in the order they were resolved.
-
----
-
-## Output
-
-A flat list of individual payment lines:
+Every row is a fully self-contained, atomic statement:
 
 ```
-Giver | Amount | Receiver
+Giver | Amount | Receiver | Amount
 ```
 
-This is **the Working Copy** (a.k.a. "The Recipe" in its math-complete form) — the minimum-effort set of real-world cash payments that settles the trade's cash flow. Formatting, name enrichment (real names, proxy annotations, etc.) for swap-day presentation happens as a separate, later step and is out of scope for this spec.
+where the two Amount values on a single row are always identical to each other. Giver-side amounts are shown as negative numbers.
+
+- **No merged cells and no "total-at-top, breakdown-below" blocks.** If a party's total is divided across multiple counterparts, that party appears on as many separate rows as needed — one full (Giver, Amount, Receiver, Amount) line per dollar-slice. There are no orphaned totals and no blank-paired cells; every row stands on its own and can be independently verified without holding cluster context in your head.
+- Rows belonging to the same settlement cluster stay grouped adjacent to one another, separated from the next cluster by a single blank spacer row. Clusters appear in the order they were solved — no magnitude-based sort is applied at this stage. Any reordering for readability is a presentation concern, deferred to the Recipe formatting step.
+
+**Backlog / future improvement (not a current requirement):** find a way to display each cluster's running subtotal alongside its NET figure from Rule 2, so the reconciliation between a cluster's line items and its originating NET value can be verified visually rather than by mental math.
 
 ---
 
-*Created: July 24, 2026, during the July RVA no-ship trade cash consolidation session.*
+## Delivery
+
+This chore is executed by a Python script, not built or maintained by hand in a spreadsheet. The script's output must be a **three-tab workbook**:
+
+1. **NET Table** (Rule 2)
+2. **Working Copy** (Rules 3–4)
+3. **The Recipe** (rules not yet defined — separate spec, future session)
+
+**Recommended mechanism: Excel (.xlsx), written locally via a library such as `openpyxl` or `xlsxwriter`.** This requires no authentication or live API calls — the script runs standalone and produces a file, which is the simpler and more reliable path for a pure data-processing job.
+
+Getting the result into Google Sheets (Troy's preferred living environment) is a separate, optional last step, not a constraint on how the script itself works:
+- **Manual:** upload the finished .xlsx to Drive; Google auto-offers conversion to a native Sheet on upload.
+- **Automated:** have the script call the Drive API's file-creation endpoint with conversion enabled, landing the workbook directly as a native Google Sheet without a manual upload step.
+
+Either delivery path uses the identical tab-building logic above; only the final "where does the finished workbook go" step differs.
+
+---
+
+*Created: July 24, 2026. Revised July 27, 2026, following joint analysis of two independent math trades' cash consolidation data.*
