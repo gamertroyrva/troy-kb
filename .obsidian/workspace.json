@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "fbd81b7ba6c9c20d",
+        "id": "02f9bb37daf12dce",
         "type": "tabs",
         "children": [
           {
-            "id": "4d72ecffe1fa848d",
+            "id": "a3364a4bfdafea05",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "projects/ads/session-restart_ads-master-agentic-loop_v2.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "session-restart_ads-master-agentic-loop_v2"
+              "title": "New tab"
             }
           }
         ]
@@ -182,14 +178,19 @@
       "bases:Create new base": false
     }
   },
-  "active": "4d72ecffe1fa848d",
+  "active": "a3364a4bfdafea05",
   "lastOpenFiles": [
+    "projects/ads/adsmasteradvisoryrestart_v4_generic.md",
+    "projects/ads/session-restart_ads-master-agentic-loop_v3.md",
+    "projects/ads/goal-card_ads-master-agentic-loop_v5.md",
+    "projects/ads/goal-card_ads-master-agentic-loop_v4.md",
+    "projects/ads/mdgoal-card_ads-master-agentic-loop_v5.md25.9kB.url",
+    "projects/ads/goal-card_ads-master-agentic-loop.md",
+    "projects/ads/goal-card_ads-master-agentic-loop_v2.md",
     "projects/ads/goal-card_ads-master-agentic-loop_v3.md",
     "projects/ads/session-restart_ads-master-agentic-loop_v2.md",
-    "projects/ads/goal-card_ads-master-agentic-loop_v2.md",
     "projects/ads/session-restart_ads-master-agentic-loop.md",
     "projects/ads/goal-card_ads-master-agentic-loop_v2_claude.md",
-    "projects/ads/goal-card_ads-master-agentic-loop.md",
     "projects/ads/goal-card_ads-master-agentic-loop_v2_1.md",
     "projects/ads/goal-card_ads-master-agentic-loop_v2 - Copy.md",
     "temp/loop-engineering.md",
@@ -208,10 +209,6 @@
     "projects/automation-opportunity-matrix-buildout-resumption.md",
     "temp/blake-morris-restart.md",
     "projects/ADS_RowBuilder_Operating_Guide_v2_0.md",
-    "temp/README.md",
-    "projects/restart-tracking-participation-agent.md",
-    "temp/experiment.md",
-    "projects/Untitled.md",
     "about-me.md.tmp.29400.0719deb6495a",
     "about-me.md.tmp.24388.7db1a0bcc104"
   ]

@@ -3,11 +3,9 @@
 
 ---
 
-## Justification
+## Formulas
 
-- **Horizontal:** left-justify everything — headers and data — except columns holding sequence/numeral identifiers (e.g., Phase #, Task #, Step #), which are center-justified, headers and data both.
-- A new identifier/label column (e.g., a concatenated display label) defaults to left-justified until usage reveals otherwise.
-- **Vertical:** center-justify cell content vertically throughout the spreadsheet.
+- Prefer live formulas over hardcoded values wherever a cell's content is derived from other cells (e.g., a label concatenating ID columns) — so the sheet stays correct if inputs change.
 
 ## Header Row
 
@@ -24,13 +22,15 @@
 - Gridlines on all spreadsheet content.
 - Include one trailing row, gridlined but genuinely empty (no formulas, no inherited formatting) — a visual cue that more rows can be added.
 
+## Justification
+
+- **Horizontal:** left-justify everything — headers and data — except columns holding sequence/numeral identifiers (e.g., Phase #, Task #, Step #), which are center-justified, headers and data both.
+- A new identifier/label column (e.g., a concatenated display label) defaults to left-justified until usage reveals otherwise.
+- **Vertical:** center-justify cell content vertically throughout the spreadsheet.
+
 ## Row Height
 
 - For medium-to-large, text-heavy spreadsheets: use automatic row height (rows size to content), not a uniform/fixed height.
-
-## Formulas
-
-- Prefer live formulas over hardcoded values wherever a cell's content is derived from other cells (e.g., a label concatenating ID columns) — so the sheet stays correct if inputs change.
 
 ## General
 
