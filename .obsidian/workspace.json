@@ -11,10 +11,14 @@
             "id": "a3364a4bfdafea05",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "projects/ads/adsmasteradvisoryrestart_v4_generic.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "adsmasteradvisoryrestart_v4_generic"
             }
           }
         ]

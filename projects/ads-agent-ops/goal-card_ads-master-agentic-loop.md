@@ -243,4 +243,3 @@ scripts/ads_xlsx_tool.py dump-audit-log, never via inline Python.
 7. Loops are expensive in tokens, can thrash on a weak done-condition, and can "pass" while still being low quality. The caps and the sharp DONE WHEN above are what make this safe to run unattended — don't loosen either without a specific reason.
 8. **New for v5:** this is the first rung where the per-row worker→qa loop actually does something different from a single-row rung — watch for it specifically. If the run behaves like Rung 1C (one long worker session, one qa check at the very end) rather than three distinct worker-then-qa cycles with a hard-stop gate between them, the `/goal` command text wasn't followed as written.
 
-**Final instruction (per the template):** wait for your explicit approval before firing Rung 2.
