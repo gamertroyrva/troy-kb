@@ -2,11 +2,18 @@
 *Backlog Item 13 — Andrew's Driving Services, Locations Database*
 *Companion doc: `advisory-session-restart_ads-master-agentic-loop.md` (architecture rationale — its scratch-copy description in §1/§5 is superseded by the Revision Cycle in v2; still current beyond that)*
 *Template used: `agentic-loop-goal-designer-prompt_v2.md`*
-*This is v7 of this Goal Card, produced after the same Rung 2 attempt #1 postmortem as v6, addressing a second finding from that run: the orchestrator's mechanical stop-enforcement only recognized the three original STOP-CAPS conditions (turn cap, time cap, stall) as legitimate reasons to end a turn — a prompt-level "stop immediately" instruction, like the preflight-missing-file clause, wasn't one of them. This forced an already-correct, authorized stop to grind through roughly 8 extra turns before the stall counter caught up and let it actually take effect. Supersedes v6.*
+*This is v8 of this Goal Card. Two unrelated things prompted it: (1) this document itself relocated here, to `troy-kb/projects/ads-agent-ops/`, after Rung 2 attempt #2 was about to fire and it was noticed that hosting the Goal Card and Issues Log inside `andrews-driving-services` gave the `/goal`-invoking session unrestricted read access to the Answer Key's literal path and every prior rung's performance history — fully reverted out of that repo, not just access-restricted, since physical absence doesn't depend on a permission rule holding up correctly; (2) firing Rung 2 attempt #2 with the v7 command text failed outright — Claude Code rejected it with "Goal condition is limited to 4000 characters (got 4323)," a limit nothing before this point had ever come close to. The `/goal` command text in §2 below is tightened to 3,724 characters, with every substantive rule from v6/v7 preserved — only wordiness was cut. Supersedes v7.*
 
 ---
 
-## What changed in v7 (read this first if you read v6)
+## What changed in v8 (read this first if you read v7)
+
+1. **Relocated.** This Goal Card (and the Issues Log, deferred-decisions doc, and restart doc) now live in `troy-kb/projects/ads-agent-ops/`, not `andrews-driving-services`. See Issues Log for the full incident.
+2. **`/goal` command text tightened to fit the 4,000-character limit**, discovered live when Rung 2 attempt #2 was fired with the untightened v7 text (4,323 characters) and rejected outright. No rule was cut — only wordy phrasing. See Issues Log for the full incident.
+
+---
+
+## What changed in v7 (superseded by v8 above, kept for history)
 
 1. **New fourth STOP-CAPS condition: Explicit Hard-Stop.** Alongside turn cap, time cap, and stall, a fourth condition is now named explicitly: any hard-stop authorized elsewhere in this goal's own text (the preflight missing-file clause, the tool-capability-gap rule) is treated as **met immediately** the moment it's triggered — not something to hold pending the stall counter. This is a standing rule, not rung-specific — it applies identically at every row count, unlike the turn/time caps which scale with N. Both places in this document that describe a hard-stop (STAGES §1 preflight, the tool-capability-gap CONSTRAINT) now cross-reference this explicitly, and the `/goal` command text's STOP clause carries it as a fourth named OR condition.
 
@@ -144,65 +151,60 @@ Paste this in Claude Code, from a **fresh session** (not a continuation of any p
 (including the Slug_Rules_Examples tab) as the authoritative references, populate
 the next 3 currently-unstarted rows in data/ads_master.xlsx.
 
-Preflight: confirm data/ads_master.xlsx, data/audit_log.xlsx, scripts/ads_xlsx_tool.py, and scripts/qa_verify_tool.py all exist — check each directly via the Read tool (or Glob), never via a raw Bash command (ls, test -f, or inline Python). If a Glob check reports a file missing, do not treat that as conclusive on its own — confirm with the Read tool first: Glob silently omits files blocked by a permission deny rule instead of flagging the denial, which looks identical to the file not existing. A Read result saying the file is denied by permission settings means the file exists; only a genuine not-found from Read is a real miss. If a file is confirmed missing, stop immediately and report — do not create any of them.
+Preflight: confirm data/ads_master.xlsx, data/audit_log.xlsx, scripts/ads_xlsx_tool.py, and scripts/qa_verify_tool.py all exist - check via Read or Glob, never raw Bash (ls, test -f, inline Python). Glob silently omits files blocked by a permission deny rule instead of flagging the denial, so a Glob "not found" alone is not conclusive - confirm with Read first. A Read result of "denied by permission settings" means the file exists; only a genuine not-found from Read is a real miss. If a file is confirmed missing, stop immediately and report - do not create any of them.
 
 For each of the 3 target rows, in order:
 
-1. Use the worker subagent, invoked fresh for this row - never handed more than
-one row per invocation - to execute Batches 1-7 against the next
-currently-unstarted row - determined by calling scripts/ads_xlsx_tool.py
-next-unstarted, never by independent reasoning - in Venue Number order, in
-data/ads_master.xlsx, following the three-state blank-handling convention (real
-data / NOTFOUND - [reason] / N/A - [reason], Venue Name Aliases excepted) exactly
-as specified in the Operating Guide. Worker must never modify rows 2-7 (Venue
-Numbers 1-6). All reads and writes to data/ads_master.xlsx, docs/data-dictionary.xlsx,
-and data/audit_log.xlsx must go through scripts/ads_xlsx_tool.py, invoked in the
-exact shape specified in worker.md - no cd prefix, no chaining, no redirects.
+1. Use the worker subagent, invoked fresh for this row - never more than one
+row per invocation - to execute Batches 1-7 against the next currently-unstarted
+row (via scripts/ads_xlsx_tool.py next-unstarted, never independent reasoning)
+in Venue Number order, in data/ads_master.xlsx, per the three-state
+blank-handling convention (real data / NOTFOUND - [reason] / N/A - [reason],
+Venue Name Aliases excepted) exactly as in the Operating Guide. Worker must
+never modify rows 2-7 (Venue Numbers 1-6). All reads/writes to
+data/ads_master.xlsx, docs/data-dictionary.xlsx, and data/audit_log.xlsx go
+through scripts/ads_xlsx_tool.py, in the exact shape in worker.md - no cd
+prefix, no chaining, no redirects.
 
-On NOTFOUND: the normal path is genuine research concluding the information isn't
-available anywhere. Separately, if a specific fetch or search tool call fails
-outright, treat that as a hard stop for that one attempt, retry once if possible,
-then continue researching via other sources - only mark NOTFOUND if nothing
-successfully retrieved supports the field. Never fabricate plausible detail to
-cover a failed fetch.
+On NOTFOUND: the normal path is genuine research concluding the information
+isn't available anywhere. Separately, if a fetch or search tool call fails
+outright, treat that as a hard stop for that attempt, retry once if possible,
+then continue via other sources - only mark NOTFOUND if nothing successfully
+retrieved supports the field. Never fabricate detail to cover a failed fetch.
 
-When worker hits a genuine fork it cannot resolve from the Data Dictionary and
-Operating Guide alone, invoke the business-analyst subagent. Business-analyst may
-use web search to ground its answer, and logs every resolution to
-data/audit_log.xlsx via scripts/ads_xlsx_tool.py. Continue - never stop the loop
-to ask Troy.
+When worker hits a genuine fork it can't resolve from the Data Dictionary and
+Operating Guide alone, invoke business-analyst. It may use web search to
+ground its answer, and logs every resolution to data/audit_log.xlsx via
+scripts/ads_xlsx_tool.py. Continue - never stop the loop to ask Troy.
 
-If either worker or business-analyst encounters a genuine tool-capability gap -
-not a research fork, the wrong or missing tool itself - stop and report
-immediately rather than improvising a workaround.
+If worker or business-analyst hits a genuine tool-capability gap - not a
+research fork, the wrong or missing tool itself - stop and report immediately
+rather than improvising a workaround.
 
-2. Once worker completes this row, invoke the qa subagent immediately to verify,
-via scripts/qa_verify_tool.py: (1) all 70 fields in this row are resolved to one
-of the three sanctioned states, and (2) rows 2-7 in data/ads_master.xlsx remain
+2. Once worker completes this row, invoke qa immediately via
+scripts/qa_verify_tool.py to verify: (1) all 70 fields resolved to one of the
+three sanctioned states, and (2) rows 2-7 in data/ads_master.xlsx remain
 byte-identical to the Answer Key.
 
-3. If qa fails either check on this row: HARD STOP the entire rung immediately.
-Do not proceed to any further rows, even if this was not the last of the 3 target
-rows. Report exactly what completed, what failed, and why.
+3. If qa fails either check: HARD STOP the entire rung immediately, even if
+not the last target row. Report exactly what completed, what failed, and why.
 
-4. If qa passes: continue to the next of the 3 target rows and repeat from step 1.
+4. If qa passes: continue to the next target row and repeat from step 1.
 
-DONE WHEN all 3 target rows have completed this per-row worker-then-qa cycle,
-with qa confirming both conditions on every row.
+DONE WHEN all 3 target rows complete this per-row worker-then-qa cycle, qa
+confirming both conditions on every row.
 
-STOP if 6 consecutive turns pass with no measurable progress, OR if 140 turns are
-reached, OR if 2 hours of wall-clock time elapse, OR if an explicit hard-stop
-condition named elsewhere in this goal (the preflight missing-file clause, a
-tool-capability gap, a qa failure) is triggered - whichever comes first. An
-explicit hard-stop is met immediately when triggered - do not treat it as
-pending until the 6-consecutive-turn condition separately catches up; end the
-turn and report on the same turn the hard-stop condition is identified. The
-first three caps apply cumulatively across all 3 rows, not per row. If stopped,
-report exactly what was completed, what remains, and why it stopped.
+STOP if 6 consecutive turns pass with no measurable progress, OR 140 turns
+reached, OR 2 hours wall-clock elapse, OR an explicit hard-stop named
+elsewhere in this goal (preflight missing-file, a tool-capability gap, a qa
+failure) triggers - whichever first. An explicit hard-stop is met immediately,
+not held pending the stall count - end the turn and report the same turn it's
+identified. First three caps apply cumulatively across all 3 rows, not per
+row. If stopped, report what completed, what remains, and why.
 
 On completion or stop, report: turns used, wall-clock time used, and all
-data/audit_log.xlsx entries generated this run - retrieved via
-scripts/ads_xlsx_tool.py dump-audit-log, never via inline Python.
+data/audit_log.xlsx entries generated this run - via
+scripts/ads_xlsx_tool.py dump-audit-log, never inline Python.
 ```
 
 *(For Rung 3+, swap "3" → "6 / 10... currently-unstarted rows" everywhere it appears — the objective line, the "For each of the N target rows" line, the DONE WHEN line, and the "next of the N target rows" line — and update the STOP-CAPS clause per the table in §1. Nothing else needs to change — the per-row loop structure and the "next currently-unstarted row, in Venue Number order" phrasing already scale to any N.)*
