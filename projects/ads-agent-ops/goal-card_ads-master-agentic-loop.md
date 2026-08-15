@@ -2,7 +2,13 @@
 *Backlog Item 13 — Andrew's Driving Services, Locations Database*
 *Companion doc: `advisory-session-restart_ads-master-agentic-loop.md` (architecture rationale — its scratch-copy description in §1/§5 is superseded by the Revision Cycle in v2; still current beyond that)*
 *Template used: `agentic-loop-goal-designer-prompt_v2.md`*
-*This is v8 of this Goal Card. Two unrelated things prompted it: (1) this document itself relocated here, to `troy-kb/projects/ads-agent-ops/`, after Rung 2 attempt #2 was about to fire and it was noticed that hosting the Goal Card and Issues Log inside `andrews-driving-services` gave the `/goal`-invoking session unrestricted read access to the Answer Key's literal path and every prior rung's performance history — fully reverted out of that repo, not just access-restricted, since physical absence doesn't depend on a permission rule holding up correctly; (2) firing Rung 2 attempt #2 with the v7 command text failed outright — Claude Code rejected it with "Goal condition is limited to 4000 characters (got 4323)," a limit nothing before this point had ever come close to. The `/goal` command text in §2 below is tightened to 3,724 characters, with every substantive rule from v6/v7 preserved — only wordiness was cut. Supersedes v7.*
+*This is v9 of this Goal Card. Supersedes v8.*
+
+---
+
+## What changed in v9 (read this first if you read v8)
+
+1. **Terminology table's Audit Log description dropped its column count.** Was "9-column log of every business-analyst resolution"; now just "log of every business-analyst resolution." Prompted by the Rung column's removal from the Audit Log schema (see Issues Log) — a hardcoded count in this table would have needed editing again the next time the schema changes, so the count is dropped rather than corrected.
 
 ---
 
@@ -65,7 +71,7 @@
 | **Data Dictionary** | `data-dictionary.xlsx` (incl. `Slug_Rules_Examples` tab) | `docs/data-dictionary.xlsx` |
 | **Master** | `ads_master.xlsx` — the live working file this loop populates directly | `data/ads_master.xlsx` |
 | **Answer Key** | `answer_key_ads_master.xlsx` — qa's integrity reference, 6 known-good rows | `C:/workspaces/non-repo/answer_key_ads_master.xlsx` (moved outside the repo in v3 — see above) |
-| **Audit Log** | `audit_log.xlsx` — 9-column log of every business-analyst resolution | `data/audit_log.xlsx` |
+| **Audit Log** | `audit_log.xlsx` — log of every business-analyst resolution | `data/audit_log.xlsx` |
 | **Worker's tool script** | `ads_xlsx_tool.py` — sanctioned read/write path for worker and business-analyst, and the orchestrator's own `dump-audit-log` reporting step | `scripts/ads_xlsx_tool.py` |
 | **qa's tool script** | `qa_verify_tool.py` — sanctioned check path for qa only; hard-codes the Answer Key path | `scripts/qa_verify_tool.py` |
 
@@ -244,4 +250,3 @@ scripts/ads_xlsx_tool.py dump-audit-log, never inline Python.
 6. Archiving the Master between rungs is your job, not the loop's.
 7. Loops are expensive in tokens, can thrash on a weak done-condition, and can "pass" while still being low quality. The caps and the sharp DONE WHEN above are what make this safe to run unattended — don't loosen either without a specific reason.
 8. **New for v5:** this is the first rung where the per-row worker→qa loop actually does something different from a single-row rung — watch for it specifically. If the run behaves like Rung 1C (one long worker session, one qa check at the very end) rather than three distinct worker-then-qa cycles with a hard-stop gate between them, the `/goal` command text wasn't followed as written.
-
