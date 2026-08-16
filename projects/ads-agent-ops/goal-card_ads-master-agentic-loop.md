@@ -2,7 +2,17 @@
 *Backlog Item 13 — Andrew's Driving Services, Locations Database*
 *Companion doc: `advisory-session-restart_ads-master-agentic-loop.md` (architecture rationale — its scratch-copy description in §1/§5 is superseded by the Revision Cycle in v2; still current beyond that)*
 *Template used: `agentic-loop-goal-designer-prompt_v2.md`*
-*This is v9 of this Goal Card. Supersedes v8.*
+*This is v10 of this Goal Card. Supersedes v9.*
+
+---
+
+## What changed in v10 (read this first if you read v9)
+
+1. **STOP-CAPS section replaced.** The fixed per-rung table (planned row counts, caps, "TBD" placeholders for future rungs) is gone. Turn cap and time cap are now computed fresh per invocation from N, using a formula with a floor (see §1) — no more fixed row-count schedule. Historical rung sizes/caps/actuals now live only in Troy's own tracking spreadsheet, not duplicated here.
+2. **The `/goal` command text is now a genuine reusable template.** Row count and both caps are `[N]` / `[turn_cap]` / `[time_cap]` placeholders, filled in at fire-time using §1's formula — not hardcoded to whichever rung fired most recently. This is also why the Goal Card should need far fewer version bumps going forward: most prior versions (v4–v9) existed mainly to update a row count.
+3. **Time cap is now always expressed in minutes**, never hours — eliminates the inconsistency where some rungs' caps were written in minutes and others in hours.
+4. §2's header no longer names a specific rung ("Rung 2 — 3 rows...") since it's a template, not a one-off.
+5. The obsolete "For Rung 3+, swap..." footnote is removed — no longer needed once real placeholders exist.
 
 ---
 
@@ -127,19 +137,14 @@ No agent in this loop makes content-quality judgment calls — that stays entire
 
 **STOP-CAPS**
 
-Four conditions stop a rung, not three. The first three are rung-specific (table below; extend rightward as data comes in; caps apply cumulatively across a rung's entire per-row loop, not per individual row). The fourth is a standing rule, identical at every row count:
+Four conditions stop a rung, not three. Three are computed fresh for each invocation from N (that rung's row count); the fourth is a standing rule, identical at every N:
 
-- **Explicit Hard-Stop** *(new in v7)* — any hard-stop this document authorizes elsewhere (the preflight missing-file clause, the tool-capability-gap rule, a qa failure) is met **immediately** when triggered. It does not wait for the stall condition below to separately catch up. Before v7, only turn cap / time cap / stall were mechanically recognized as legitimate reasons to end a turn — a prompt-level "stop immediately" instruction wasn't one of them, which meant an already-authorized, correct stop (Rung 2 attempt #1's preflight failure) still had to grind through several extra turns before the stall condition let it actually take effect. This condition exists so that no longer happens.
+- **Turn cap** — multiply N by 2, add 13, then round up to the next multiple of 5. If that's less than 40, use 40.
+- **Time cap** — multiply N by 13.2, then round up to the next multiple of 30. That's your cap in minutes — never switch to hours. If it's less than 120, use 120.
+- **Stall condition** — 6 consecutive turns, no measurable progress.
+- **Explicit Hard-Stop** *(unchanged since v7)* — any hard-stop this document authorizes elsewhere (the preflight missing-file clause, the tool-capability-gap rule, a qa failure) is met **immediately** when triggered. It does not wait for the stall condition to separately catch up. Before v7, only turn cap / time cap / stall were mechanically recognized as legitimate reasons to end a turn — a prompt-level "stop immediately" instruction wasn't one of them, which meant an already-authorized, correct stop (Rung 2 attempt #1's preflight failure) still had to grind through several extra turns before the stall condition let it actually take effect. This condition exists so that no longer happens.
 
-| Rung | Rows | Turn cap | Time cap | Stall condition |
-|---|---|---|---|---|
-| 1 | 1 | 45 | 45 min | 6 consecutive turns, no measurable progress |
-| 1B | 1 | 45 | 45 min | same — deliberately identical to Rung 1, to isolate whether v3's fixes reduced turns/time |
-| 1C | 1 | 45 | 45 min | same — deliberately identical to 1/1B, to isolate whether v4's hooks reduced turns/time. **Result: ~5 turns, ~21 min — the clearest improvement yet.** |
-| **2** | **3** | **140** | **2 hrs** | **same, now cumulative across all 3 rows per the per-row loop in STAGES** |
-| 3 | 6 | 280 | 4 hrs | same |
-| 4 | 10 | *TBD from rungs 1–3 data* | *TBD* | same |
-| 5–8 | 25 / 50 / 100 / 190 | *TBD, extrapolated* | *TBD* | same |
+Caps apply cumulatively across the rung's full per-row loop, not per row. N and its caps are set fresh at the start of each invocation, based on the time available that sitting — no fixed row-count schedule. History (past rung sizes, caps, and actuals) lives in Troy's own tracking spreadsheet, not here.
 
 **MODEL** *(set via subagent definitions in `.claude/agents/`, not inline in the `/goal` text)*
 - **worker** — Sonnet 5, Medium
@@ -148,18 +153,18 @@ Four conditions stop a rung, not three. The first three are rung-specific (table
 
 ---
 
-## 2. The `/goal` Command (Rung 2 — 3 rows, first multi-row rung)
+## 2. The `/goal` Command (template — fill in [N], [turn_cap], [time_cap] each time, using §1's formula)
 
 Paste this in Claude Code, from a **fresh session** (not a continuation of any prior conversation — cached subagent definitions from an earlier session will not see today's `.claude/agents/*.md` edits):
 
 ```
 /goal Using docs/ADS_RowBuilder_Operating_Guide.md (v3.4) and docs/data-dictionary.xlsx
 (including the Slug_Rules_Examples tab) as the authoritative references, populate
-the next 3 currently-unstarted rows in data/ads_master.xlsx.
+the next [N] currently-unstarted rows in data/ads_master.xlsx.
 
 Preflight: confirm data/ads_master.xlsx, data/audit_log.xlsx, scripts/ads_xlsx_tool.py, and scripts/qa_verify_tool.py all exist - check via Read or Glob, never raw Bash (ls, test -f, inline Python). Glob silently omits files blocked by a permission deny rule instead of flagging the denial, so a Glob "not found" alone is not conclusive - confirm with Read first. A Read result of "denied by permission settings" means the file exists; only a genuine not-found from Read is a real miss. If a file is confirmed missing, stop immediately and report - do not create any of them.
 
-For each of the 3 target rows, in order:
+For each of the [N] target rows, in order:
 
 1. Use the worker subagent, invoked fresh for this row - never more than one
 row per invocation - to execute Batches 1-7 against the next currently-unstarted
@@ -197,23 +202,22 @@ not the last target row. Report exactly what completed, what failed, and why.
 
 4. If qa passes: continue to the next target row and repeat from step 1.
 
-DONE WHEN all 3 target rows complete this per-row worker-then-qa cycle, qa
+DONE WHEN all [N] target rows complete this per-row worker-then-qa cycle, qa
 confirming both conditions on every row.
 
-STOP if 6 consecutive turns pass with no measurable progress, OR 140 turns
-reached, OR 2 hours wall-clock elapse, OR an explicit hard-stop named
-elsewhere in this goal (preflight missing-file, a tool-capability gap, a qa
-failure) triggers - whichever first. An explicit hard-stop is met immediately,
-not held pending the stall count - end the turn and report the same turn it's
-identified. First three caps apply cumulatively across all 3 rows, not per
-row. If stopped, report what completed, what remains, and why.
+STOP if 6 consecutive turns pass with no measurable progress, OR [turn_cap]
+turns reached, OR [time_cap] minutes wall-clock elapse, OR an explicit
+hard-stop named elsewhere in this goal (preflight missing-file, a
+tool-capability gap, a qa failure) triggers - whichever first. An explicit
+hard-stop is met immediately, not held pending the stall count - end the turn
+and report the same turn it's identified. First three caps apply cumulatively
+across all [N] rows, not per row. If stopped, report what completed, what
+remains, and why.
 
 On completion or stop, report: turns used, wall-clock time used, and all
 data/audit_log.xlsx entries generated this run - via
 scripts/ads_xlsx_tool.py dump-audit-log, never inline Python.
 ```
-
-*(For Rung 3+, swap "3" → "6 / 10... currently-unstarted rows" everywhere it appears — the objective line, the "For each of the N target rows" line, the DONE WHEN line, and the "next of the N target rows" line — and update the STOP-CAPS clause per the table in §1. Nothing else needs to change — the per-row loop structure and the "next currently-unstarted row, in Venue Number order" phrasing already scale to any N.)*
 
 ---
 
