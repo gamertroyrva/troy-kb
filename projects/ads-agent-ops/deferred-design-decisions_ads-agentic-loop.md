@@ -25,7 +25,13 @@ Not a specific rung number — that's deliberately left open. The trigger is a *
 
 In other words — every rung up through whichever one is still attended can reasonably run on this deferred decision as-is. The first rung where Troy plans to be asleep or away is the hard gate: worker's Bash-driven write access to the Master gets reassessed (Option B or C from the original discussion) before that specific run fires, not after.
 
-**Status:** Open. Revisit at the attended → unattended transition, whenever that rung is identified.
+**Revisited: August 16, 2026** (advisory session, in preparation for a walk-away unattended run)
+
+Attended-terminal walk-away unattended runs — same mechanism as an attended run, Troy simply leaves the terminal running and returns later — have been thought through and analyzed, and are deemed safe and appropriate to proceed with. The remaining risk in this specific launch mode is availability, not safety: if a subagent hits a genuine Bash call outside the two sanctioned scripts, WebSearch/WebFetch, and the explicit settings.json allow list, it falls through to a live permission prompt with nobody present to answer it — the run stalls silently rather than doing anything destructive, and may not produce a final report if it stalls before STAGES step 3. Troy has accepted this convenience cost. Verified before accepting: (a) the `git push` hard deny fires with no prompt regardless of who's watching, so it needs no dependence on prompt-answering; (b) `Last Verified/Updated` is stamped only at completion of Batch 7 (`worker.md`), so a row only partway done when a stall occurs is correctly re-picked-up as still-unstarted next time — no silent data loss or skipped rows.
+
+**What triggers revisiting this, updated:** No longer the attended → unattended transition — that has now happened, in this walk-away form, and been evaluated above. The new trigger is a genuinely different unattended mechanism: a **headless/scheduled invocation** (no terminal to walk up to and answer a prompt on) being devised and planned. Not designed yet, not needed yet — Troy's stated interest in eventually learning this is high, just not for today.
+
+**Status:** Open.
 
 ---
 
@@ -46,6 +52,12 @@ Claude Code's current permission system does not appear to support scoping an al
 Two independent triggers, either one sufficient:
 - Claude Code ships genuine per-subagent-scoped permissions (rules that apply only to specific Task/subagent invocations, not the whole session) — migrate this rule to that mechanism the moment it's available.
 - The attended → unattended transition that triggers Decision #1's reassessment. If worker's own Bash grant gets narrowed at that point (Option B or C from Decision #1), this deny rule's whole reason for existing may become moot — worth reassessing both together, not separately.
+
+**Revisited: August 16, 2026** (tied to Decision #1's revisit, same session)
+
+No change to the rule itself. The blanket `Bash(git push *)` deny fires immediately with no prompt regardless of whether anyone is present to answer one — so it already behaves correctly in the walk-away unattended case without any change needed. The friction to legitimate human-directed pushes remains the only real cost, and remains a separate question from unattended-run readiness.
+
+**What triggers revisiting this, updated:** Same two triggers as before, plus — tied to Decision #1's new trigger — if a future headless/scheduled launch mechanism changes how permission prompts and deny rules interact, reassess both decisions together at that point.
 
 **Status:** Open.
 
