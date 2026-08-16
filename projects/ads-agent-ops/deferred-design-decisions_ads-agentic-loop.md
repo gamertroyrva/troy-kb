@@ -51,4 +51,44 @@ Two independent triggers, either one sufficient:
 
 ---
 
+## Decision #3 — Whether to harden WebFetch-blocked-domain handling (virginiawine.org, and blocked domains generally)
+
+**Date:** August 16, 2026 (observed during Rung 5, August 15)
+
+**The better way:**
+Pre-route virginiawine.org straight to WebSearch (skip the doomed direct WebFetch entirely), and add a general Wayback Machine fallback to Empty Fetch Discipline for any domain that blocks direct WebFetch. Fully designed, drafted, and verified working during this cycle — a real archived snapshot was checked by hand and found to contain substantive, structured data. The complete implementation exists in **PR #7** (`andrews-driving-services`), closed without merging rather than deleted, so the actual code is there to revive if this decision ever gets revisited.
+
+**The chosen way, for now:**
+Leave current behavior as-is. Worker and business-analyst still attempt the doomed direct WebFetch to virginiawine.org (absorbing one wasted attempt per affected venue), and no Wayback Machine fallback exists yet for any blocked domain.
+
+**Why this is responsible enough for now (Troy's words):**
+"The overall process is not showing signs of degradation from the existence of these two issues." The diversity of information available on the internet more than compensates for a small number of sources that intentionally wall themselves off from AI-fueled harvesters. Rather than complicate the infrastructure now in pursuit of a marginal improvement, live with it.
+
+**What triggers revisiting this:**
+The process actually showing signs of degradation attributable to these two issues — for example, a venue where the *only* available information sits behind a WebFetch-blocked domain with no usable snippet, producing an avoidable NOTFOUND that a fix would have closed, or the wasted-attempt cost becoming noticeable at higher row counts.
+
+**Status:** Open.
+
+---
+
+## Decision #4 — Whether to constrain business-analyst's resolution effort on lower-stakes forks
+
+**Date:** August 16, 2026 (observed during Rung 5, August 15)
+
+**The better way:**
+Give business-analyst a lighter-weight resolution path for forks where "close enough, known-to-fluctuate" is an acceptable answer (pricing being the clear example) — distinct from forks requiring the kind of exhaustive, multi-source verification appropriate for something like jurisdiction or county. Right now business-analyst applies the same high-effort research posture to every fork, regardless of what's actually at stake.
+
+**The chosen way, for now:**
+Leave business-analyst's resolution behavior exactly as-is. No effort-tiering, no changes to its research posture for any fork type.
+
+**Why this is responsible enough for now (Troy's words):**
+"The current quest is to harden the infrastructure to set myself up for a supervised, unattended run or runs. That's the priority for today." Tuning business-analyst's effort calibration is a real improvement opportunity, but it isn't what today's hardening work is for, and touching it now risks pulling focus from the actual priority. "My spidey sense says don't mess with this. I'm okay FOR NOW if business-analyst agent overinvests in resolving issues that in reality are not terribly important."
+
+**What triggers revisiting this:**
+A future run showing a notable departure from the established ~7–8%/row cost baseline, combined with a high volume of business-analyst escalations in that run's Audit Log — especially if the numerical impact is severe. Troy won't have full visibility into how much effort any single escalation consumed, but the Audit Log will show which items needed escalating, and his own per-run statistics capture (turns, wall-clock, block % per row) will surface any run where cost and escalation volume together suggest the overinvestment is actually costing something real, not just a theoretical concern.
+
+**Status:** Open.
+
+---
+
 *Add future deferred decisions below, same format: the better way / the chosen way / why it's responsible for now / what triggers revisiting it.*
