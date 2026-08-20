@@ -103,4 +103,32 @@ A future run showing a notable departure from the established ~7–8%/row cost b
 
 ---
 
+## Decision #5 — Whether to build a sanctioned "reference row" capability for worker
+
+**Date:** August 17, 2026 (surfaced during Rung 6 postmortem, following the `pippin-hill` incident)
+
+**The better way:**
+A narrow sanctioned action letting worker read a previously-completed row for style/formatting consistency, without guessing slugs or building ad hoc commands.
+
+**The chosen way, for now:**
+Don't build it. Tighten the stop-and-report rule instead, so the impulse gets redirected to "stop and report" rather than "improvise."
+
+**Why this is responsible enough for now:**
+One observed instance isn't enough to justify the added codebase surface — every prior sanctioned action in this project was added in response to a demonstrated, recurring need, not a single occurrence.
+
+**What triggers revisiting this:**
+A repeat instance of this same "look at another completed row" impulse, occurring after the rule tightening is live — evidence the rule alone doesn't suppress it and a sanctioned outlet is genuinely needed.
+
+**Revisited: August 20, 2026** (advisory session, following a second occurrence)
+
+Reversed. Two occurrences (Rung 6's `pippin-hill` guess, Rung 7's `92-acres` guess) showed the prohibition side of this decision — worker's stop-and-report rule — had a 0-for-2 track record at actually catching the impulse in the act; both times worker tried something else instead of stopping. Rung 6's incident was only visible at all because the malformed command it built happened to trip Claude Code's own unrelated command-substitution risk heuristic, not because the designed mechanism worked. Reinforcing the prohibition further (drafted as PR #9) would also have gone stale immediately, since Troy independently reviewed the six pre-completed rows and selected one (Venue Number 3, slug `mountain-vine`) as a genuinely good example — a real, curated resource sitting unused.
+
+Built the capability instead: a new read-only `sample-reference-row` action in `ads_xlsx_tool.py`, hardcoded to the chosen row, with a documented fallback to the other five pre-completed rows if the default doesn't cover a needed field. No new write surface — `read-row` already had no restriction on Venue Numbers 1-6, only writes were ever blocked, so this closed a knowledge/sanction gap rather than a technical one. PR #9 (the prohibition-reinforcement fix) closed unmerged; PR #10 shipped this instead. See Issues Log Entry 34.
+
+**What triggers revisiting this, updated:** N/A — this decision is now implemented, not deferred. If a future need arises for a broader reference-row capability (e.g., matching by venue category, or genuine free browsing across all six), that would be a new deferred decision, not a reopening of this one.
+
+**Status:** Reversed — implemented via PR #10, August 20, 2026.
+
+---
+
 *Add future deferred decisions below, same format: the better way / the chosen way / why it's responsible for now / what triggers revisiting it.*
