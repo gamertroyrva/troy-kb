@@ -2,7 +2,15 @@
 *Backlog Item 13 — Andrew's Driving Services, Locations Database*
 *Companion doc: `advisory-session-restart_ads-master-agentic-loop.md` (architecture rationale — its scratch-copy description in §1/§5 is superseded by the Revision Cycle in v2; still current beyond that)*
 *Template used: `agentic-loop-goal-designer-prompt_v2.md`*
-*This is v10 of this Goal Card. Supersedes v9.*
+*This is v11 of this Goal Card. Supersedes v10.*
+
+---
+
+## What changed in v11 (read this first if you read v10)
+
+1. **New Preflight check: Bash cwd resolution.** Rung 8A (Aug 20, 2026) found the shell's actual working directory had silently resolved to the repo's *parent* folder (`C:\workspaces` instead of `C:\workspaces\andrews-driving-services`) — a documented Claude Code Desktop bug on Windows (GitHub issue #52165), not anything in this repo. This broke every relative-path Bash invocation (`python scripts/...`) the moment a subagent tried one. Critically, the existing missing-file Preflight check (via Read/Glob) passed anyway — Read/Glob can resolve correctly even when Bash's own cwd is wrong, so it gave no warning. Preflight now independently confirms Bash itself is rooted at the repo, via a harmless `python scripts/ads_xlsx_tool.py --help` call, before any subagent is dispatched. New Explicit Hard-Stop trigger; see STAGES §1 and STOP-CAPS.
+2. This also closes a process gap the same incident surfaced: on discovering the bug mid-rung (row 1 of 2), the orchestrator told qa to "proceed however necessary to get the checks run" rather than treating it as the tool-capability-gap stop-and-report case this document already requires — and qa then improvised two different unsanctioned invocation shapes across its two rows, both of which needed a live permission decision. Catching the problem once at Preflight, before any subagent runs, removes the situation where that call has to be made mid-row at all.
+3. See Issues Log Entry 37 for the full incident (troy-kb).
 
 ---
 
@@ -127,7 +135,7 @@ No agent in this loop makes content-quality judgment calls — that stays entire
 - Archiving/backup of the Master between rungs is entirely Troy's responsibility, entirely outside the loop.
 
 **STAGES**
-1. **Preflight** — verify the Master and the Audit Log (with its headers already in place) both exist at their expected repo paths, and that both tool scripts (`scripts/ads_xlsx_tool.py`, `scripts/qa_verify_tool.py`) exist. If a Glob check reports a file missing, confirm with `Read` before treating that as real — Glob silently omits files blocked by a permission deny rule rather than flagging the denial, which looks identical to "doesn't exist" (see v6 changelog). A `Read` result of "denied by permission settings" means the file exists; only a genuine not-found from `Read` is a true miss. If a file is confirmed missing, **hard stop and flag it** — never silently create any of it. This is the Explicit Hard-Stop STOP-CAPS condition (see below) — met immediately, not held pending the stall counter.
+1. **Preflight** — verify the Master and the Audit Log (with its headers already in place) both exist at their expected repo paths, and that both tool scripts (`scripts/ads_xlsx_tool.py`, `scripts/qa_verify_tool.py`) exist. If a Glob check reports a file missing, confirm with `Read` before treating that as real — Glob silently omits files blocked by a permission deny rule rather than flagging the denial, which looks identical to "doesn't exist" (see v6 changelog). A `Read` result of "denied by permission settings" means the file exists; only a genuine not-found from `Read` is a true miss. Separately, confirm **Bash itself** is rooted at the repo — run `python scripts/ads_xlsx_tool.py --help` via Bash; an error instead of usage text means Bash's working directory isn't the repo root, even though the Read/Glob check above passed. These are independent checks on purpose: Read/Glob can resolve correctly even when Bash's own cwd is wrong (see v11 changelog, Rung 8A), so a passing file-existence check does not vouch for Bash. If either check fails, **hard stop and flag it** — never silently create a missing file, and never `cd`, never fall back to an absolute path, never let any subagent improvise a workaround around a cwd problem. This is the Explicit Hard-Stop STOP-CAPS condition (see below) — met immediately, not held pending the stall counter.
 2. **For each of the N target rows, in order:**
    1. Invoke the **worker** subagent, fresh for this row — never handed more than one row per invocation — to execute Batches 1–7 per the Operating Guide and Data Dictionary against the next currently-unstarted row, determined by calling `ads_xlsx_tool.py next-unstarted` (never hardcoded, never independent reasoning), consulting **business-analyst** on genuine forks and logging each resolution to the Audit Log.
    2. Invoke **qa** immediately on that one row, via `qa_verify_tool.py`: the row is structurally complete (all 70 fields resolved to a sanctioned state), and rows 2–7 in the Master remain byte-identical to the Answer Key.
@@ -142,7 +150,7 @@ Four conditions stop a rung, not three. Three are computed fresh for each invoca
 - **Turn cap** — multiply N by 2, add 13, then round up to the next multiple of 5. If that's less than 40, use 40.
 - **Time cap** — multiply N by 13.2, then round up to the next multiple of 30. That's your cap in minutes — never switch to hours. If it's less than 120, use 120.
 - **Stall condition** — 6 consecutive turns, no measurable progress.
-- **Explicit Hard-Stop** *(unchanged since v7)* — any hard-stop this document authorizes elsewhere (the preflight missing-file clause, the tool-capability-gap rule, a qa failure) is met **immediately** when triggered. It does not wait for the stall condition to separately catch up. Before v7, only turn cap / time cap / stall were mechanically recognized as legitimate reasons to end a turn — a prompt-level "stop immediately" instruction wasn't one of them, which meant an already-authorized, correct stop (Rung 2 attempt #1's preflight failure) still had to grind through several extra turns before the stall condition let it actually take effect. This condition exists so that no longer happens.
+- **Explicit Hard-Stop** *(cwd trigger added in v11, otherwise unchanged since v7)* — any hard-stop this document authorizes elsewhere (the preflight missing-file clause, the preflight Bash-cwd-resolution check, the tool-capability-gap rule, a qa failure) is met **immediately** when triggered. It does not wait for the stall condition to separately catch up. Before v7, only turn cap / time cap / stall were mechanically recognized as legitimate reasons to end a turn — a prompt-level "stop immediately" instruction wasn't one of them, which meant an already-authorized, correct stop (Rung 2 attempt #1's preflight failure) still had to grind through several extra turns before the stall condition let it actually take effect. This condition exists so that no longer happens.
 
 Caps apply cumulatively across the rung's full per-row loop, not per row. N and its caps are set fresh at the start of each invocation, based on the time available that sitting — no fixed row-count schedule. History (past rung sizes, caps, and actuals) lives in Troy's own tracking spreadsheet, not here.
 
@@ -162,7 +170,7 @@ Paste this in Claude Code, from a **fresh session** (not a continuation of any p
 (including the Slug_Rules_Examples tab) as the authoritative references, populate
 the next [N] currently-unstarted rows in data/ads_master.xlsx.
 
-Preflight: confirm data/ads_master.xlsx, data/audit_log.xlsx, scripts/ads_xlsx_tool.py, and scripts/qa_verify_tool.py all exist - check via Read or Glob, never raw Bash (ls, test -f, inline Python). Glob silently omits files blocked by a permission deny rule instead of flagging the denial, so a Glob "not found" alone is not conclusive - confirm with Read first. A Read result of "denied by permission settings" means the file exists; only a genuine not-found from Read is a real miss. If a file is confirmed missing, stop immediately and report - do not create any of them.
+Preflight: confirm data/ads_master.xlsx, data/audit_log.xlsx, scripts/ads_xlsx_tool.py, and scripts/qa_verify_tool.py all exist - check via Read or Glob, never raw Bash (ls, test -f, inline Python). Glob silently omits files blocked by a permission deny rule instead of flagging the denial, so a Glob "not found" alone is not conclusive - confirm with Read first. A Read result of "denied by permission settings" means the file exists; only a genuine not-found from Read is a real miss. If a file is confirmed missing, stop immediately and report - do not create any of them. Also confirm Bash is rooted at the repo: run python scripts/ads_xlsx_tool.py --help via Bash - an error instead of usage text means Bash cwd is wrong. Stop immediately and report the error - never cd, never use an absolute path.
 
 For each of the [N] target rows, in order:
 
@@ -207,7 +215,7 @@ confirming both conditions on every row.
 
 STOP if 6 consecutive turns pass with no measurable progress, OR [turn_cap]
 turns reached, OR [time_cap] minutes wall-clock elapse, OR an explicit
-hard-stop named elsewhere in this goal (preflight missing-file, a
+hard-stop named elsewhere in this goal (preflight missing-file/cwd, a
 tool-capability gap, a qa failure) triggers - whichever first. An explicit
 hard-stop is met immediately, not held pending the stall count - end the turn
 and report the same turn it's identified. First three caps apply cumulatively
