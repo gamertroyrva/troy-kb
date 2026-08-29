@@ -131,4 +131,24 @@ Built the capability instead: a new read-only `sample-reference-row` action in `
 
 ---
 
+## Decision #6 — Whether to give worker narrow `read-row` access for parent-venue existence checks
+
+**Date:** August 29, 2026 (advisory session, resuming after Rung 8B)
+
+**The better way:**
+A narrow sanctioned capability letting worker itself confirm whether a candidate parent venue already exists as a row (via `read-row` on a predicted slug) before escalating a parent-venue fork to business-analyst — freeing business-analyst for genuine relationship judgment rather than a lookup worker could plausibly do itself.
+
+**The chosen way, for now:**
+Don't build it. Worker continues to escalate this fork pattern to business-analyst in full, exactly as it does today.
+
+**Why this is responsible enough for now:**
+In both observed instances (Audit Log Entry #7, KP Spirits II; Entry #8, Tim Smith Spirits), the "existence check" and the "relationship judgment" turned out not to be separable. Entry #7's resolution required reading and interpreting the candidate parent's own Field 8 narrative to confirm a genuine reciprocal relationship, not just confirming the row existed. Entry #8's naive same-address match would have been actively wrong — Belmont Farm is a contract producer, not a parent — and only business-analyst's live re-verification against virginiaspirits.org and application of the "contract production ≠ parentage" precedent (Entry #5) caught it. A worker-only existence check, without that same scrutiny, risks silently writing an incorrect Parent Venue value rather than correctly escalating it.
+
+**What triggers revisiting this:**
+A future instance where a parent-venue fork is genuinely resolvable by a bare existence lookup alone — no interpretation of the candidate's own content needed, no risk of a naive match being wrong — recurring often enough to justify the added capability.
+
+**Status:** Declined.
+
+---
+
 *Add future deferred decisions below, same format: the better way / the chosen way / why it's responsible for now / what triggers revisiting it.*
