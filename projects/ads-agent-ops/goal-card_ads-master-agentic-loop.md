@@ -2,7 +2,13 @@
 *Backlog Item 13 — Andrew's Driving Services, Locations Database*
 *Companion doc: `advisory-session-restart_ads-master-agentic-loop.md` (architecture rationale — its scratch-copy description in §1/§5 is superseded by the Revision Cycle in v2; still current beyond that)*
 *Template used: `agentic-loop-goal-designer-prompt_v2.md`*
-*This is v11 of this Goal Card. Supersedes v10.*
+*This is v12 of this Goal Card. Supersedes v11.*
+
+---
+
+## What changed in v12 (read this first if you read v11)
+
+1. **Final report now includes WebSearch calls used**, alongside turns and wall-clock. Rung 8B (Aug 20, 2026) hard-stopped at row 22/25 when the session's WebSearch budget hit 200/200 — correctly handled as a tool-capability-gap Explicit Hard-Stop, but the report format had no place to surface that number explicitly. STAGES §3 and the `/goal` command's closing report line both updated. See Issues Log Entry 40 (troy-kb).
 
 ---
 
@@ -141,7 +147,7 @@ No agent in this loop makes content-quality judgment calls — that stays entire
    2. Invoke **qa** immediately on that one row, via `qa_verify_tool.py`: the row is structurally complete (all 70 fields resolved to a sanctioned state), and rows 2–7 in the Master remain byte-identical to the Answer Key.
    3. If qa fails either check: **hard stop the entire rung immediately.** Do not proceed to any further rows, even if this was not the last of the N target rows. Report exactly what completed, what failed, and why. This is also the Explicit Hard-Stop STOP-CAPS condition (see below) — met immediately, not held pending the stall counter.
    4. If qa passes: continue to the next of the N target rows and repeat from (1).
-3. Report to Troy: turns used, wall-clock time used, all Audit Log entries generated this run — retrieved via `ads_xlsx_tool.py dump-audit-log`, never via inline Python.
+3. Report to Troy: turns used, wall-clock time used, WebSearch calls used, all Audit Log entries generated this run — retrieved via `ads_xlsx_tool.py dump-audit-log`, never via inline Python.
 
 **STOP-CAPS**
 
@@ -222,8 +228,8 @@ and report the same turn it's identified. First three caps apply cumulatively
 across all [N] rows, not per row. If stopped, report what completed, what
 remains, and why.
 
-On completion or stop, report: turns used, wall-clock time used, and all
-data/audit_log.xlsx entries generated this run - via
+On completion or stop, report: turns used, wall-clock time used, WebSearch
+calls used, and all data/audit_log.xlsx entries generated this run - via
 scripts/ads_xlsx_tool.py dump-audit-log, never inline Python.
 ```
 
