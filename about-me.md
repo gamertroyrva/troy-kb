@@ -1,22 +1,23 @@
 # About Troy
 *This is the single context file to attach at the start of any Claude Chat session or Cowork task.*
-*Also read: `anti-ai-writing-style.md` and `troy-voice-examples.md` and circumstantially `math-trade-magic.md`*
 
 ---
 
 ## Session Start Instructions
 
-**At the start of every session, load any additional markdown files provided to you alongside this one and add them to current context:**
+**At the start of every session, load whatever markdown files are provided alongside this one and add them to current context.** Troy's intention is to always include `ai-journey-digest-apr26-aug31.md` among them — if it is not among the files provided, flag this before proceeding.
 
-**At the start of every session, fetch the live AI Journey Journal and treat its entries as current context:**
-https://docs.google.com/spreadsheets/d/1c5R4pV-mMQJ_LK3ix-oZo4n73WYVr8Gfw4gpaWzWhNQ/edit?usp=sharing
+**Fetch the live AI Journey Journal via CSV export, and treat only entries dated September 1, 2026 or later as current context:**
+https://docs.google.com/spreadsheets/d/1c5R4pV-mMQJ_LK3ix-oZo4n73WYVr8Gfw4gpaWzWhNQ/export?format=csv&gid=1566826487
 
-The journal has three columns: Date, Personal AI Journey Journal Entry, Workplace AI Journey Journal Entry. Read all populated rows.
+The journal has four columns: Date, Personal AI Journey Journal Entry, Workplace AI Journey Journal Entry, Excuses/Other. The April 26 – August 31, 2026 story lives in the static digest file (when provided); only read rows dated September 1, 2026 or later from this live sheet.
 
-**At the start of every session, also fetch the live AI Journey Backlog and treat its entries as current context:**
-https://docs.google.com/spreadsheets/d/1qIFkwZmWewva4bO5rN8BJiXVGvPDniv8PYPaf7QN5cs/edit?usp=sharing
+**At the start of every session, also fetch the live AI Journey Backlog via CSV export and treat its entries as current context:**
+https://docs.google.com/spreadsheets/d/1qIFkwZmWewva4bO5rN8BJiXVGvPDniv8PYPaf7QN5cs/export?format=csv&gid=0
 
-The backlog has five columns: Item, Category/Project, Subdivision, Task/Deliverable, Details/Why. Read all populated rows.
+The backlog has six columns: Item, Category/Project, Subdivision, Task/Deliverable, Details/Why, Status. Read all populated rows.
+
+**Once everything is loaded, briefly confirm what was loaded — including whether the digest was present — and flag any load failures.**
 
 ---
 
@@ -187,5 +188,5 @@ Treat Troy as a capable, technically grounded professional who is building AI fl
 
 ---
 
-*Last updated: May 18, 2026*
+*Last updated: September 12, 2026*
 
